@@ -1,181 +1,356 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Gewinnspiel</title>
-  <style>
-    :root{
-      --bg1:#eef2ff;
-      --bg2:#fdf2f8;
-      --text:#0f172a;
-      --panel:#ffffff;
-      --accent:#2563eb;
-      --accent-2:#d946ef;
-      --muted:#64748b;
-      --shadow:0 8px 28px rgba(2,8,23,.12);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";color:var(--text);background:linear-gradient(135deg,var(--bg1),var(--bg2));}
-    .screen{
-      min-height:100svh;
-      display:grid;
-      place-items:center;
-      padding:2rem;
-    }
-    .card{
-      width:min(720px,92vw);
-      background:var(--panel);
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      padding:2rem;
-      text-align:center;
-      position:relative;
-    }
-    h1,h2{margin:.25rem 0 1rem 0;font-size:clamp(1.4rem,2.4vw + .8rem,2rem)}
-    p{margin:.5rem 0 1.25rem 0;line-height:1.6}
-    .btn-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
-    button{
-      appearance:none;border:none;border-radius:999px;
-      padding:.9rem 1.4rem;font-weight:700;cursor:pointer;
-      background:var(--accent);color:#fff;font-size:1rem;
-      transition:transform .15s ease, background-color .15s ease, box-shadow .15s ease;
-      box-shadow:var(--shadow);
-    }
-    button.secondary{background:var(--accent-2)}
-    button.ghost{background:#e5e7eb;color:#111827}
-    button:hover{transform:translateY(-1px)}
-    button:active{transform:translateY(0)}
-    button:focus-visible{outline:3px solid rgba(37,99,235,.35);outline-offset:3px}
-    .muted{color:var(--muted)}
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gewinnspiel</title>
+    <style>
+      :root {
+        --bg1: #eef2ff;
+        --bg2: #fdf2f8;
+        --text: #0f172a;
+        --panel: #ffffff;
+        --accent: #2563eb;
+        --accent-2: #d946ef;
+        --muted: #64748b;
+        --shadow: 0 8px 28px rgba(2, 8, 23, 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
+          Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        color: var(--text);
+        background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      }
+      .screen {
+        min-height: 100svh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+      }
+      .card {
+        width: min(720px, 92vw);
+        background: var(--panel);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        text-align: center;
+        position: relative;
+      }
+      h1,
+      h2 {
+        margin: 0.25rem 0 1rem 0;
+        font-size: clamp(1.4rem, 2.4vw + 0.8rem, 2rem);
+      }
+      p {
+        margin: 0.5rem 0 1.25rem 0;
+        line-height: 1.6;
+      }
+      .btn-row {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      button {
+        appearance: none;
+        border: none;
+        border-radius: 999px;
+        padding: 0.9rem 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        font-size: 1rem;
+        transition: transform 0.15s ease, background-color 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: var(--shadow);
+      }
+      button.secondary {
+        background: var(--accent-2);
+      }
+      button.ghost {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      button:focus-visible {
+        outline: 3px solid rgba(37, 99, 235, 0.35);
+        outline-offset: 3px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .route {
+        display: none;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.24s ease, transform 0.24s ease;
+      }
+      .route.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .badge {
+        display: inline-block;
+        background: #ecfeff;
+        color: #155e75;
+        border: 1px solid #99f6e4;
+        padding: 0.35rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+      img.gif {
+        max-width: 100%;
+        border-radius: 12px;
+        margin-top: 1rem;
+        box-shadow: var(--shadow);
+      }
+      .mute-toggle {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .timer {
+        font-variant-numeric: tabular-nums;
+        font-size: clamp(1.6rem, 3vw + 1rem, 2.5rem);
+        letter-spacing: 0.02em;
+      }
+      .sub {
+        color: var(--muted);
+        margin-top: -0.5rem;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .pill {
+        display: inline-block;
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        color: #3730a3;
+        border-radius: 999px;
+        padding: 0.25rem 0.6rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="screen">
+      <section class="card">
+        <button
+          id="muteBtn"
+          class="mute-toggle"
+          aria-pressed="false"
+          title="Ton stummschalten"
+        >
+          🔊 Ton an
+        </button>
 
-    /* Router-Transitionen */
-    .route{display:none;opacity:0;transform:translateY(8px);transition:opacity .24s ease, transform .24s ease}
-    .route.show{display:block;opacity:1;transform:translateY(0)}
-
-    /* Flugzeug-Animation */
-    .sky{
-      position:relative;
-      height:200px;
-      margin-top:1rem;
-      border-radius:12px;
-      background:linear-gradient(180deg,#c7d2fe,#e0e7ff);
-      overflow:hidden;
-    }
-    .cloud{
-      position:absolute;top:10%;left:-20%;width:180px;height:60px;background:#fff;border-radius:60px;filter:blur(0.4px);opacity:.9;
-      box-shadow:60px 10px 0 10px #fff,120px -5px 0 0 #fff;
-      animation:cloud-move 24s linear infinite;
-    }
-    .cloud.c2{top:55%;animation-duration:28s;opacity:.8}
-    @keyframes cloud-move{
-      from{transform:translateX(0)}
-      to{transform:translateX(140%)}
-    }
-    .plane{
-      position:absolute;
-      left:-80px; top:55%;
-      width:64px; height:64px;
-      transform:translateY(-50%);
-      animation:fly 6s linear infinite;
-    }
-    @keyframes fly{
-      0%{left:-90px; transform:translateY(-50%) rotate(0deg)}
-      30%{transform:translateY(-60%) rotate(-3deg)}
-      60%{transform:translateY(-40%) rotate(2deg)}
-      100%{left:calc(100% + 90px); transform:translateY(-50%) rotate(0deg)}
-    }
-    .badge{
-      display:inline-block;background:#ecfeff;color:#155e75;border:1px solid #99f6e4;
-      padding:.35rem .6rem;border-radius:999px;font-size:.85rem;font-weight:600;margin-bottom:.5rem;
-    }
-    footer{margin-top:1rem;font-size:.9rem}
-  </style>
-</head>
-<body>
-  <main class="screen">
-    <section class="card">
-      <!-- HOME -->
-      <div id="home" class="route show" role="region" aria-labelledby="home-title">
-        <div class="badge">Hauptseite</div>
-        <h1 id="home-title">Wollen Sie an einem Gewinnspiel teilnehmen?</h1>
-        <p class="muted">Bitte wählen Sie eine Option.</p>
-        <div class="btn-row" role="group" aria-label="Antwort wählen">
-          <button id="btn-ja" aria-controls="terms">Ja</button>
-          <button id="btn-nein" class="ghost">Nein</button>
+        <!-- TIMER -->
+        <div
+          id="timer"
+          class="route show"
+          role="region"
+          aria-labelledby="timer-title"
+        >
+          <div class="pill">Countdown</div>
+          <h1 id="timer-title">
+            Die Seite ist aktuell noch gesperrt. Wir bitten um etwas Geduld
+          </h1>
+          <div id="countdown" class="timer">--:--:--</div>
+          <div class="btn-row" style="margin-top: 1rem">
+            <button id="btn-skip" class="hidden">Jetzt mitspielen</button>
+          </div>
         </div>
-      </div>
 
-      <!-- TERMS -->
-      <div id="terms" class="route" role="region" aria-labelledby="terms-title">
-        <div class="badge">Rahmenbedingungen</div>
-        <h2 id="terms-title">Gewinnspiel – Rahmenbedingungen</h2>
-        <p><strong>Gewinnspiel nur für arme Menschen gültig.</strong></p>
-        <div class="btn-row">
-          <button id="btn-arm" class="secondary" aria-controls="prize">Ich bin arm</button>
-          <button id="btn-geld" class="ghost" aria-controls="rich">Ich hab Geld</button>
+        <!-- HOME -->
+        <div id="home" class="route">
+          <div class="badge">Hauptseite</div>
+          <h1>Wollen Sie an einem Gewinnspiel teilnehmen?</h1>
+          <p class="muted">Bitte wählen Sie eine Option.</p>
+          <div class="btn-row">
+            <button id="btn-ja">Ja</button>
+            <button id="btn-nein" class="ghost">Nein</button>
+          </div>
         </div>
-      </div>
 
-      <!-- PRIZE -->
-      <div id="prize" class="route" role="region" aria-labelledby="prize-title">
-        <div class="badge">Gewonnen!</div>
-        <h2 id="prize-title">Glückwunsch! 🎉</h2>
-        <p>Du hast <strong>kostenlose Flüge nach China</strong> bekommen! ✈️🇨🇳</p>
-
-        <div class="sky" aria-hidden="true">
-          <div class="cloud"></div>
-          <div class="cloud c2"></div>
-          <!-- Einfaches SVG-Flugzeug -->
-          <svg class="plane" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-label="Flugzeug">
-            <path d="M60 30c2 1.2 2 2.8 0 4L40 44l-5-5 7-7-7-7 5-5 20 10z" fill="#1f2937"/>
-            <path d="M2 29h26l9 9-7 7-7-7H8l-6-6 0-3z" fill="#334155"/>
-            <circle cx="43" cy="32" r="2" fill="#e5e7eb"/>
-          </svg>
+        <!-- TERMS -->
+        <div id="terms" class="route">
+          <div class="badge">Rahmenbedingungen</div>
+          <h2>Gewinnspiel – Rahmenbedingungen</h2>
+          <p><strong>Gewinnspiel nur für arme Menschen gültig.</strong></p>
+          <div class="btn-row">
+            <button id="btn-arm" class="secondary">Ich bin arm</button>
+            <button id="btn-geld" class="ghost">Ich hab Geld</button>
+          </div>
         </div>
-        <footer class="muted">Viel Spaß bei der Reise! 🌏</footer>
-        <div class="btn-row" style="margin-top:1rem">
-          <button id="btn-home-from-prize">Zurück zur Hauptseite</button>
-        </div>
-      </div>
 
-      <!-- RICH -->
-      <div id="rich" class="route" role="region" aria-labelledby="rich-title">
-        <div class="badge">Info</div>
-        <h2 id="rich-title">Schön für dich.</h2>
-        <p class="muted">Vielleicht beim nächsten Mal 😉</p>
-        <div class="btn-row">
-          <button id="btn-home-from-rich">Zurück zur Hauptseite</button>
+        <!-- PRIZE -->
+        <div id="prize" class="route">
+          <div class="badge">Gewonnen!</div>
+          <h2>Glückwunsch! 🎉</h2>
+          <div id="prize-step1">
+            <p>Du hast <strong>50&nbsp;€ gewonnen!</strong> 💸</p>
+            <div class="btn-row" style="margin-top: 0.5rem">
+              <button id="btn-redeem" class="secondary">
+                Gewinncode einlösen
+              </button>
+            </div>
+          </div>
+          <div id="prize-step2" class="hidden">
+            <p>
+              Glückwunsch! Soeben wurde die Kosten für CHN Inlandsflüge von
+              <strong>Alex</strong> übernommen! – Viel Spaß! ✈️
+            </p>
+            <img src="BDAY.gif" alt="Geburtstags-Feier" class="gif" />
+            <p style="margin-top: 1rem; color: #64748b; font-style: italic">
+              Aufgrund Ihres fortgeschrittenen Alters empfehlen wir, einen
+              <strong>Gehstock</strong> für die Reise einzuplanen. 😉
+            </p>
+          </div>
+          <div class="btn-row" style="margin-top: 1rem">
+            <button id="btn-home-from-prize">Zurück zur Hauptseite</button>
+          </div>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <script>
-    // Einfacher "Router": blende die passende Sektion ein
-    const routes = ["home","terms","prize","rich"];
-    function show(id){
-      routes.forEach(r => {
-        const el = document.getElementById(r);
-        if(!el) return;
-        const on = r === id;
-        el.classList.toggle("show", on);
-        el.setAttribute("aria-hidden", String(!on));
+        <!-- RICH -->
+        <div id="rich" class="route">
+          <div class="badge">Info</div>
+          <h2>Das glaubst du doch selber nicht 😂</h2>
+          <img src="laugh.gif" alt="Lachen" class="gif" />
+          <div class="btn-row" style="margin-top: 1rem">
+            <button id="btn-home-from-rich">Zurück zur Hauptseite</button>
+          </div>
+        </div>
+
+        <!-- NEIN -->
+        <div id="nope" class="route">
+          <div class="badge">Abgelehnt</div>
+          <h2>Dann halt nicht :(</h2>
+          <p class="muted">Vielleicht beim nächsten Mal.</p>
+          <div class="btn-row" style="margin-top: 1rem">
+            <button id="btn-home-from-nope">Zurück zur Hauptseite</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Audio -->
+    <audio id="audio-prize" src="cheer.mp3" preload="auto"></audio>
+    <audio id="audio-rich" src="laugh.mp3" preload="auto"></audio>
+
+    <script>
+      const routes = ["timer", "home", "terms", "prize", "rich", "nope"];
+      const targetDate = new Date("2025-08-20T00:00:00"); // Zielzeitpunkt
+      const countdownEl = document.getElementById("countdown");
+      const skipBtn = document.getElementById("btn-skip");
+      let muted = false;
+
+      const audioPrize = document.getElementById("audio-prize");
+      const audioRich = document.getElementById("audio-rich");
+      const step1 = document.getElementById("prize-step1");
+      const step2 = document.getElementById("prize-step2");
+
+      function stopAllAudio() {
+        [audioPrize, audioRich].forEach((a) => {
+          a.pause();
+          a.currentTime = 0;
+        });
+      }
+
+      function show(id) {
+        routes.forEach((r) => {
+          const el = document.getElementById(r);
+          el.classList.toggle("show", r === id);
+          el.setAttribute("aria-hidden", String(r !== id));
+        });
+        if (id === "prize") {
+          step1.classList.remove("hidden");
+          step2.classList.add("hidden");
+        }
+        stopAllAudio();
+        if (!muted && id === "rich") audioRich.play().catch(() => {});
+      }
+
+      function updateCountdown() {
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          countdownEl.textContent = "00:00:00";
+          skipBtn.classList.remove("hidden"); // Button freischalten
+          return;
+        }
+        const h = String(Math.floor(diff / 3600000)).padStart(2, "0");
+        const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, "0");
+        const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, "0");
+        countdownEl.textContent = `${h}:${m}:${s}`;
+      }
+
+      setInterval(updateCountdown, 1000);
+      updateCountdown();
+
+      // Buttons
+      skipBtn.addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-ja")
+        .addEventListener("click", () => show("terms"));
+      document
+        .getElementById("btn-nein")
+        .addEventListener("click", () => show("nope"));
+      document
+        .getElementById("btn-arm")
+        .addEventListener("click", () => show("prize"));
+      document
+        .getElementById("btn-geld")
+        .addEventListener("click", () => show("rich"));
+      document
+        .getElementById("btn-home-from-prize")
+        .addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-home-from-rich")
+        .addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-home-from-nope")
+        .addEventListener("click", () => show("home"));
+
+      // Gewinncode
+      document.getElementById("btn-redeem").addEventListener("click", () => {
+        step1.classList.add("hidden");
+        step2.classList.remove("hidden");
+        stopAllAudio();
+        if (!muted) audioPrize.play().catch(() => {});
       });
-      // URL-Hash aktualisieren (teilbar)
-      if(location.hash !== "#" + id) history.replaceState(null, "", "#" + id);
-    }
-    // Buttons verdrahten
-    document.getElementById("btn-ja").addEventListener("click", () => show("terms"));
-    document.getElementById("btn-nein").addEventListener("click", () => show("rich"));
-    document.getElementById("btn-arm").addEventListener("click", () => show("prize"));
-    document.getElementById("btn-geld").addEventListener("click", () => show("rich"));
-    document.getElementById("btn-home-from-prize").addEventListener("click", () => show("home"));
-    document.getElementById("btn-home-from-rich").addEventListener("click", () => show("home"));
 
-    // Mit Hash starten, falls vorhanden
-    const hash = location.hash.replace("#","");
-    if(routes.includes(hash)) show(hash);
-  </script>
-</body>
+      // Mute-Schalter
+      const muteBtn = document.getElementById("muteBtn");
+      muteBtn.addEventListener("click", () => {
+        muted = !muted;
+        muteBtn.textContent = muted ? "🔇 Ton aus" : "🔊 Ton an";
+        [audioPrize, audioRich].forEach((a) => (a.muted = muted));
+        if (muted) stopAllAudio();
+      });
+    </script>
+  </body>
 </html>
