@@ -15,27 +15,31 @@
         --muted: #64748b;
         --shadow: 0 8px 28px rgba(2, 8, 23, 0.12);
       }
-      * { box-sizing: border-box; }
-
-      /* Safari-/iPhone-zentriert: Body selbst zentriert die Karte */
-      html, body {
+      * {
+        box-sizing: border-box;
+      }
+      /* Standard, kein Flex mehr hier */
+      html,
+      body {
         height: 100%;
         margin: 0;
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica,
           Arial, "Apple Color Emoji", "Segoe UI Emoji";
         color: var(--text);
         background: linear-gradient(135deg, var(--bg1), var(--bg2));
-        display: flex;                 /* NEU: zentrieren */
-        align-items: center;           /* vertikal */
-        justify-content: center;       /* horizontal */
+        overflow-x: hidden;
       }
 
+      /* ZENTRIERUNG mit dynamic viewport + Safe Area */
       .screen {
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;                 /* statt 2rem, mehr Platz auf iPhone */
+        min-height: 100dvh; /* <- wichtig für iOS Safari */
+        display: grid;
+        place-items: center;
+        /* Safe-Area-Polster gegen die iOS-Leisten */
+        padding: max(1rem, env(safe-area-inset-top))
+          max(1rem, env(safe-area-inset-right))
+          max(1rem, env(safe-area-inset-bottom))
+          max(1rem, env(safe-area-inset-left));
       }
 
       .card {
@@ -47,85 +51,169 @@
         text-align: center;
         position: relative;
       }
-      h1, h2 {
+      h1,
+      h2 {
         margin: 0.25rem 0 1rem 0;
         font-size: clamp(1.4rem, 2.4vw + 0.8rem, 2rem);
       }
-      p { margin: 0.5rem 0 1.25rem 0; line-height: 1.6; }
-
+      p {
+        margin: 0.5rem 0 1.25rem 0;
+        line-height: 1.6;
+      }
       .btn-row {
-        display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
       }
       button {
-        appearance: none; border: none; border-radius: 999px;
-        padding: 0.9rem 1.4rem; font-weight: 700; cursor: pointer;
-        background: var(--accent); color: #fff; font-size: 1rem;
-        transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+        appearance: none;
+        border: none;
+        border-radius: 999px;
+        padding: 0.9rem 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        background: var(--accent);
+        color: #fff;
+        font-size: 1rem;
+        transition: transform 0.15s ease, background-color 0.15s ease,
+          box-shadow 0.15s ease;
         box-shadow: var(--shadow);
       }
-      button.secondary { background: var(--accent-2); }
-      button.ghost { background: #e5e7eb; color: #111827; }
-      button:hover { transform: translateY(-1px); }
-      button:active { transform: translateY(0); }
-      button:focus-visible { outline: 3px solid rgba(37, 99, 235, 0.35); outline-offset: 3px; }
-
-      .muted { color: var(--muted); }
+      button.secondary {
+        background: var(--accent-2);
+      }
+      button.ghost {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      button:hover {
+        transform: translateY(-1px);
+      }
+      button:active {
+        transform: translateY(0);
+      }
+      button:focus-visible {
+        outline: 3px solid rgba(37, 99, 235, 0.35);
+        outline-offset: 3px;
+      }
+      .muted {
+        color: var(--muted);
+      }
       .route {
-        display: none; opacity: 0; transform: translateY(8px);
+        display: none;
+        opacity: 0;
+        transform: translateY(8px);
         transition: opacity 0.24s ease, transform 0.24s ease;
       }
-      .route.show { display: block; opacity: 1; transform: translateY(0); }
-
+      .route.show {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
       .badge {
-        display: inline-block; background: #ecfeff; color: #155e75;
-        border: 1px solid #99f6e4; padding: 0.35rem 0.6rem; border-radius: 999px;
-        font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem;
+        display: inline-block;
+        background: #ecfeff;
+        color: #155e75;
+        border: 1px solid #99f6e4;
+        padding: 0.35rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
       }
       img.gif {
-        max-width: 100%; border-radius: 12px; margin-top: 1rem; box-shadow: var(--shadow);
+        max-width: 100%;
+        border-radius: 12px;
+        margin-top: 1rem;
+        box-shadow: var(--shadow);
       }
       .mute-toggle {
-        position: absolute; top: 0.75rem; right: 0.75rem;
-        background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 999px;
-        padding: 0.35rem 0.7rem; font-weight: 600; cursor: pointer;
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: #f1f5f9;
+        border: 1px solid #cbd5e1;
+        border-radius: 999px;
+        padding: 0.35rem 0.7rem;
+        font-weight: 600;
+        cursor: pointer;
       }
       .timer {
         font-variant-numeric: tabular-nums;
         font-size: clamp(1.6rem, 3vw + 1rem, 2.5rem);
         letter-spacing: 0.02em;
       }
-      .sub { color: var(--muted); margin-top: -0.5rem; }
-      .hidden { display: none !important; }
-      .pill {
-        display: inline-block; background: #eef2ff; border: 1px solid #c7d2fe; color: #3730a3;
-        border-radius: 999px; padding: 0.25rem 0.6rem; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.5rem;
+      .sub {
+        color: var(--muted);
+        margin-top: -0.5rem;
       }
-
-      /* iPhone 13 / schmale Geräte optimieren */
+      .hidden {
+        display: none !important;
+      }
+      .pill {
+        display: inline-block;
+        background: #eef2ff;
+        border: 1px solid #c7d2fe;
+        color: #3730a3;
+        border-radius: 999px;
+        padding: 0.25rem 0.6rem;
+        font-weight: 600;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+      }
+      /* --- Optimierungen für iPhone 13 & ähnliche Geräte --- */
       @media (max-width: 430px) {
-        .card { padding: 1.2rem; border-radius: 14px; }
-        h1, h2 { font-size: 1.3rem; }
-        p { font-size: 0.95rem; }
-        button { padding: 0.85rem 1.2rem; font-size: 0.95rem; }
-        img.gif { max-width: 90%; }
-        .timer { font-size: 1.9rem; }
+        .card {
+          padding: 1.2rem; /* weniger Rand, mehr Platz für Inhalt */
+          border-radius: 14px;
+        }
+        h1,
+        h2 {
+          font-size: 1.3rem; /* kleinere Überschrift */
+        }
+        p {
+          font-size: 0.95rem; /* lesbar, aber platzsparend */
+        }
+        button {
+          padding: 0.85rem 1.2rem; /* Buttons nicht zu breit */
+          font-size: 0.95rem;
+        }
+        img.gif {
+          max-width: 90%; /* GIFs füllen fast ganze Breite */
+          height: auto;
+        }
+        .timer {
+          font-size: 1.8rem; /* Countdown gut sichtbar */
+        }
       }
     </style>
   </head>
   <body>
     <main class="screen">
       <section class="card">
-        <button id="muteBtn" class="mute-toggle" aria-pressed="false" title="Ton stummschalten">
+        <button
+          id="muteBtn"
+          class="mute-toggle"
+          aria-pressed="false"
+          title="Ton stummschalten"
+        >
           🔊 Ton an
         </button>
 
         <!-- TIMER -->
-        <div id="timer" class="route show" role="region" aria-labelledby="timer-title">
+        <div
+          id="timer"
+          class="route show"
+          role="region"
+          aria-labelledby="timer-title"
+        >
           <div class="pill">Countdown</div>
-          <h1 id="timer-title">Die Seite ist aktuell noch gesperrt. Wir bitten um etwas Geduld</h1>
+          <h1 id="timer-title">
+            Die Seite ist aktuell noch gesperrt. Wir bitten um etwas Geduld
+          </h1>
           <div id="countdown" class="timer">--:--:--</div>
           <div class="btn-row" style="margin-top: 1rem">
-            <!-- erscheint erst nach Stichtag -->
             <button id="btn-skip" class="hidden">Jetzt mitspielen</button>
           </div>
         </div>
@@ -159,16 +247,18 @@
           <div id="prize-step1">
             <p>Du hast <strong>50&nbsp;€ gewonnen!</strong> 💸</p>
             <div class="btn-row" style="margin-top: 0.5rem">
-              <button id="btn-redeem" class="secondary">Gewinncode einlösen</button>
+              <button id="btn-redeem" class="secondary">
+                Gewinncode einlösen
+              </button>
             </div>
           </div>
           <div id="prize-step2" class="hidden">
             <p>
-              Glückwunsch! Soeben wurden die Kosten für CHN-Inlandsflüge von
+              Glückwunsch! Soeben wurde die Kosten für CHN Inlandsflüge von
               <strong>Alex</strong> übernommen! – Viel Spaß! ✈️
             </p>
             <img src="BDAY.gif" alt="Geburtstags-Feier" class="gif" />
-            <p style="margin-top:1rem; color:#64748b; font-style:italic;">
+            <p style="margin-top: 1rem; color: #64748b; font-style: italic">
               Aufgrund Ihres fortgeschrittenen Alters empfehlen wir, einen
               <strong>Gehstock</strong> für die Reise einzuplanen. 😉
             </p>
@@ -202,28 +292,25 @@
 
     <!-- Audio -->
     <audio id="audio-prize" src="cheer.mp3" preload="auto"></audio>
-    <audio id="audio-rich"  src="laugh.mp3" preload="auto"></audio>
+    <audio id="audio-rich" src="laugh.mp3" preload="auto"></audio>
 
     <script>
       const routes = ["timer", "home", "terms", "prize", "rich", "nope"];
-
-      /* HINWEIS:
-         In deinem letzten Code stand 2025-08-20 als Stichtag.
-         Ich übernehme diesen Wert hier. Wenn du 21.08.2025 willst,
-         stelle einfach auf "2025-08-21T00:00:00" um. */
-      const targetDate = new Date("2025-08-20T00:00:00");
-
+      const targetDate = new Date("2025-08-20T00:00:00"); // Zielzeitpunkt
       const countdownEl = document.getElementById("countdown");
       const skipBtn = document.getElementById("btn-skip");
       let muted = false;
 
       const audioPrize = document.getElementById("audio-prize");
-      const audioRich  = document.getElementById("audio-rich");
+      const audioRich = document.getElementById("audio-rich");
       const step1 = document.getElementById("prize-step1");
       const step2 = document.getElementById("prize-step2");
 
       function stopAllAudio() {
-        [audioPrize, audioRich].forEach((a) => { a.pause(); a.currentTime = 0; });
+        [audioPrize, audioRich].forEach((a) => {
+          a.pause();
+          a.currentTime = 0;
+        });
       }
 
       function show(id) {
@@ -238,7 +325,6 @@
         }
         stopAllAudio();
         if (!muted && id === "rich") audioRich.play().catch(() => {});
-        history.replaceState(null, "", "#" + id);
       }
 
       function updateCountdown() {
@@ -261,13 +347,27 @@
 
       // Buttons
       skipBtn.addEventListener("click", () => show("home"));
-      document.getElementById("btn-ja").addEventListener("click", () => show("terms"));
-      document.getElementById("btn-nein").addEventListener("click", () => show("nope"));
-      document.getElementById("btn-arm").addEventListener("click", () => show("prize"));
-      document.getElementById("btn-geld").addEventListener("click", () => show("rich"));
-      document.getElementById("btn-home-from-prize").addEventListener("click", () => show("home"));
-      document.getElementById("btn-home-from-rich").addEventListener("click", () => show("home"));
-      document.getElementById("btn-home-from-nope").addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-ja")
+        .addEventListener("click", () => show("terms"));
+      document
+        .getElementById("btn-nein")
+        .addEventListener("click", () => show("nope"));
+      document
+        .getElementById("btn-arm")
+        .addEventListener("click", () => show("prize"));
+      document
+        .getElementById("btn-geld")
+        .addEventListener("click", () => show("rich"));
+      document
+        .getElementById("btn-home-from-prize")
+        .addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-home-from-rich")
+        .addEventListener("click", () => show("home"));
+      document
+        .getElementById("btn-home-from-nope")
+        .addEventListener("click", () => show("home"));
 
       // Gewinncode
       document.getElementById("btn-redeem").addEventListener("click", () => {
@@ -285,10 +385,6 @@
         [audioPrize, audioRich].forEach((a) => (a.muted = muted));
         if (muted) stopAllAudio();
       });
-
-      // Mit Hash starten (optional)
-      const hash = location.hash.replace("#", "");
-      if (routes.includes(hash)) show(hash);
     </script>
   </body>
 </html>
