@@ -153,6 +153,31 @@
         font-size: 0.9rem;
         margin-bottom: 0.5rem;
       }
+      /* --- Optimierungen für iPhone 13 & ähnliche Geräte --- */
+      @media (max-width: 430px) {
+        .card {
+          padding: 1.2rem; /* weniger Rand, mehr Platz für Inhalt */
+          border-radius: 14px;
+        }
+        h1,
+        h2 {
+          font-size: 1.3rem; /* kleinere Überschrift */
+        }
+        p {
+          font-size: 0.95rem; /* lesbar, aber platzsparend */
+        }
+        button {
+          padding: 0.85rem 1.2rem; /* Buttons nicht zu breit */
+          font-size: 0.95rem;
+        }
+        img.gif {
+          max-width: 90%; /* GIFs füllen fast ganze Breite */
+          height: auto;
+        }
+        .timer {
+          font-size: 1.8rem; /* Countdown gut sichtbar */
+        }
+      }
     </style>
   </head>
   <body>
@@ -262,7 +287,7 @@
 
     <script>
       const routes = ["timer", "home", "terms", "prize", "rich", "nope"];
-      const targetDate = new Date("2025-08-21T00:00:00"); // Zielzeitpunkt
+      const targetDate = new Date("2025-08-20T00:00:00"); // Zielzeitpunkt
       const countdownEl = document.getElementById("countdown");
       const skipBtn = document.getElementById("btn-skip");
       let muted = false;
@@ -354,4 +379,3 @@
     </script>
   </body>
 </html>
-
